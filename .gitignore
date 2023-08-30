@@ -133,3 +133,4 @@ dmypy.json
 
 # Configuration
 /tmmgram.yaml
+/uploads/

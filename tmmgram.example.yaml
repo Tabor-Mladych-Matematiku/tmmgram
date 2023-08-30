@@ -1,6 +1,9 @@
 secret: "test"
 admin_password: "admin"
 timezone: 'Europe/Prague'
+upload_folder: 'uploads'
+allowed_extensions: ['jpg', 'jpeg']  # TODO
+# for debugging using a local SQLite database, remove the `db` section
 db:
   user: "db_user"
   password: "db_password"

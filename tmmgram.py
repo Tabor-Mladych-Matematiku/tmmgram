@@ -9,6 +9,7 @@ app = Flask(__name__)
 app.secret_key = config['secret']
 app.config["DEBUG"] = True
 
+
 # Timezone configuration
 
 try:  # Linux only
@@ -18,6 +19,7 @@ try:  # Linux only
     tzset()
 except ImportError:
     pass
+
 
 # Database configuration
 
@@ -38,6 +40,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db.init_app(app)
 bcrypt.init_app(app)
 
+
 # Login configuration
 
 login_manager = LoginManager()
@@ -56,8 +59,18 @@ def load_user(user_id):
         return User.query.get(int(user_id))
 
 
+# uploads folder
+
+os.makedirs(config['upload_folder'], exist_ok=True)
+app.config['MAX_CONTENT_LENGTH'] = 16_000_000  # 16 MB  # TODO
+
+
+# load blueprints
+
 from login import login_blueprint
 app.register_blueprint(login_blueprint)
+from upload import upload_blueprint
+app.register_blueprint(upload_blueprint)
 
 
 @app.route('/')

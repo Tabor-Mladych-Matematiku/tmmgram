@@ -1,10 +1,10 @@
 {# templates/_navigation.html #}
 
-<nav class="navbar navbar-expand-md navbar-light bg-light mb-4 shadow ">
+<nav class="navbar navbar-expand navbar-light bg-light mb-4 shadow ">
     <div class="container">
         <a class="navbar-brand" href="/">
             <img src="{{ url_for('static', filename='TMM_circle.png') }}" alt="TMM logo" height="50" class="d-inline-block align-top me-3">
-            <span class="logo fs-1">tmmgram</span>
+            <span class="logo fs-1 align-middle">tmmgram</span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -23,6 +23,9 @@
                         <a class="nav-link" href="/profile">{{ user.name }}</a>
                     </li>
                 {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/upload"><i class="bi bi-plus-square fs-2"></i></a>
+                    </li>
             </ul>
         </div>
     </div>
