@@ -19,7 +19,7 @@
 <body>
 
 {% if user and user.is_authenticated %}
-{#% include "_navigation.html" %#}
+{% include "_navigation.html" %}
 {% endif %}
 
 {% block content_main %}

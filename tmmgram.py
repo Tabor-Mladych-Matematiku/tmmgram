@@ -1,9 +1,9 @@
 from flask import Flask
-from flask_login import LoginManager
+from flask_login import LoginManager, login_required
 
 from db_model import db, bcrypt, Admin, User
 from config import config
-
+from helpers import render
 
 app = Flask(__name__)
 app.secret_key = config['secret']
@@ -58,3 +58,10 @@ def load_user(user_id):
 
 from login import login_blueprint
 app.register_blueprint(login_blueprint)
+
+
+@app.route('/')
+@login_required
+def index():
+    return render("index.html")
+

@@ -1,9 +1,18 @@
+@font-face {
+  font-family: Billabong;
+  src: url(FontsFree-Net-Billabong.ttf);
+}
+
 h1 {
     margin-bottom: 1rem;
 }
 
 h2 {
     margin-top: 1rem;
+}
+
+.logo {
+    font-family: Billabong, sans-serif;
 }
 
 .login-form {

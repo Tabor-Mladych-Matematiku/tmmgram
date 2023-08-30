@@ -1,0 +1,29 @@
+{# templates/_navigation.html #}
+
+<nav class="navbar navbar-expand-md navbar-light bg-light mb-4 shadow ">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <img src="{{ url_for('static', filename='TMM_circle.png') }}" alt="TMM logo" height="50" class="d-inline-block align-top me-3">
+            <span class="logo fs-1">tmmgram</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav ms-auto mb-2 mb-md-0">
+                {% if user.is_admin %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin">Administrace</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Odhlásit</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/profile">{{ user.name }}</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
