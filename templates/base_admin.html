@@ -1,0 +1,22 @@
+{# templates/base_admin.html #}
+
+{% extends "base.html" %}
+
+{% block content_main %}
+<main class="container{{ "-fluid" if fluid }}">
+    {% include "_flashes.html" %}
+    <div class="row {{ "justify-content-center" if fluid }}">
+        <div class="col{{ "-auto" if fluid }}">
+            {% if user.is_admin %}
+                {% block content_admin %}
+                    <h1>Administrace</h1>
+                {% endblock content_admin %}
+            {% else %}
+                <div class="alert alert-danger fade show" role="alert">
+                    Tato stránka je dostupná pouze organizátorům.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</main>
+{% endblock content_main %}

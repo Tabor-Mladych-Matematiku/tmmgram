@@ -1,0 +1,29 @@
+{# templates/example.html #}
+
+{% extends "base.html" %}
+
+{% block content_main %}
+<main class="container login-form mt-4">
+    <h1>tmmgram</h1>
+    {% include "_flashes.html" %}
+    <form method="post">
+        <div class="row mb-3">
+            <label for="user" class="col-3 col-form-label">Jméno</label>
+            <div class="col-9">
+                <input type="text" class="form-control" id="user" name="user" required value="{{ username }}">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="password" class="col-3 col-form-label">Heslo</label>
+            <div class="col-9">
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col">
+                <button type="submit" class="btn btn-primary">Přihlásit</button>
+            </div>
+        </div>
+    </form>
+</main>
+{% endblock content_main %}
