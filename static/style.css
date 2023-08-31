@@ -3,6 +3,15 @@
   src: url(FontsFree-Net-Billabong.ttf);
 }
 
+/* page */
+
+/* limit width to Bootstrap "Medium" container (see https://getbootstrap.com/docs/5.3/layout/containers/) */
+@media (min-width: 768px) {
+    .container {
+        max-width: 720px;
+    }
+}
+
 h1 {
     margin-bottom: 1rem;
 }
@@ -11,9 +20,20 @@ h2 {
     margin-top: 1rem;
 }
 
+/* Navbar */
+
 .logo {
     font-family: Billabong, sans-serif;
 }
+
+.navbar-nav .nav-link {
+  padding-top: 0;
+  padding-bottom: 0;
+  height: 50px;
+  line-height: 50px;
+}
+
+/* Forms */
 
 .login-form {
     max-width: 500px;
@@ -24,9 +44,12 @@ label.required:after {
   color: red;
 }
 
-.navbar-nav .nav-link {
-  padding-top: 0;
-  padding-bottom: 0;
-  height: 50px;
-  line-height: 50px;
+/* Posts */
+
+.post {
+    max-width: 100%;
+}
+
+.post img {
+    width: 100%;
 }
