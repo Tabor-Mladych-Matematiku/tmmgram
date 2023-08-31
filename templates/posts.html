@@ -1,0 +1,8 @@
+{# templates/posts.html #}
+
+{% for post in posts %}
+    <article>
+        <img src="{{ post.src }}">
+        {{ post.timestamp }}
+    </article>
+{% endfor %}

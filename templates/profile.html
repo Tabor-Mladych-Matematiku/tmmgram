@@ -1,7 +1,11 @@
-{# templates/index.html #}
+{# templates/profile.html #}
 
 {% extends "base.html" %}
 
 {% block content %}
+    <h1>{{ user.name }}</h1>
+    <h2>TODO: number of followers</h2>
+
     {% include "posts.html" %}
+
 {% endblock content %}

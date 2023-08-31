@@ -73,10 +73,7 @@ from admin import admin_blueprint
 app.register_blueprint(admin_blueprint)
 from upload import upload_blueprint
 app.register_blueprint(upload_blueprint)
-
-
-@app.route('/')
-@login_required
-def index():
-    return render("index.html")
-
+from profile import profile_blueprint
+app.register_blueprint(profile_blueprint)
+from feed import feed_blueprint
+app.register_blueprint(feed_blueprint)
