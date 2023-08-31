@@ -23,3 +23,10 @@ label.required:after {
   content: "*";
   color: red;
 }
+
+.navbar-nav .nav-link {
+  padding-top: 0;
+  padding-bottom: 0;
+  height: 50px;
+  line-height: 50px;
+}

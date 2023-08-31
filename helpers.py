@@ -7,7 +7,7 @@ from flask_login import current_user, login_required
 
 def render(template, **kwargs):
     parameters = {
-        "user": current_user,
+        "current_user": current_user,
     }
     parameters.update(kwargs)
     return render_template(template, **parameters)

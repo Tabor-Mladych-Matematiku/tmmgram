@@ -1,0 +1,24 @@
+{# templates/users.html #}
+
+{% extends "base_admin.html" %}
+
+{% block content_admin %}
+    <h1>Uživatelé</h1>
+    <ul class="list-group mb-3">
+        {% for user in users %}
+            <li class="list-group-item d-flex align-items-center">
+                <div class="flex-fill">
+                    {{ user.name }}
+                </div>
+                <div>
+                    <a class="btn btn-primary" href="/profile/{{ user.name }}" role="button"><i class="bi bi-person-fill"></i></a>
+                    <a class="btn btn-warning" href="/admin/users/{{ user.id_user }}" role="button"><i class="bi bi-pencil-square"></i></a>
+                    <form method="post" action="/admin/users/{{ user.id_user }}/delete" class="d-inline" onsubmit='return confirm("Smazat \"{{ user.name }}\"?")'>
+                        <button type="submit" class="btn btn-danger"><i class="bi bi-trash-fill"></i></button>
+                    </form>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+    <a class="btn btn-primary mb-1 me-1" href="/admin/users/new" role="button">Přidat uživatele</a>
+{% endblock content_admin %}

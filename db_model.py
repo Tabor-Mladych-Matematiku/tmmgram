@@ -36,7 +36,7 @@ class Admin(AbstractUser):
 
 class User(db.Model, AbstractUser):
 
-    __tablename__ = "teams"
+    __tablename__ = "users"
 
     id_user = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(256), nullable=False)
@@ -45,7 +45,7 @@ class User(db.Model, AbstractUser):
 
     @property
     def id(self):
-        return self.id_team
+        return self.id_user
 
     def __init__(self, name, password_plain, note):
         self.name = name

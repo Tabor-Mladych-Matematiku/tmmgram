@@ -69,6 +69,8 @@ app.config['MAX_CONTENT_LENGTH'] = 16_000_000  # 16 MB  # TODO
 
 from login import login_blueprint
 app.register_blueprint(login_blueprint)
+from admin import admin_blueprint
+app.register_blueprint(admin_blueprint)
 from upload import upload_blueprint
 app.register_blueprint(upload_blueprint)
 
