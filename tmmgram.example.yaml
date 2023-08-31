@@ -2,7 +2,7 @@ secret: "test"
 admin_password: "admin"
 timezone: 'Europe/Prague'
 upload_folder: 'uploads'
-allowed_extensions: ['jpg', 'jpeg']  # TODO
+allowed_extensions: ['jpg', 'jpeg', 'png', 'webp', 'heic']  # TODO
 # for debugging using a local SQLite database, remove the `db` section
 db:
   user: "db_user"

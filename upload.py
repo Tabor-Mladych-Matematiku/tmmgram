@@ -1,3 +1,4 @@
+import base64
 import os
 import uuid
 
@@ -17,30 +18,22 @@ allowed_extensions = ", ".join(f".{ext}" for ext in config['allowed_extensions']
 @login_required
 def upload():
     if request.method == "POST":
-        # check if the post request has the file part
-        if 'file' not in request.files:
+        # check if the file was uploaded
+        if 'file' not in request.form or request.form['file'] == '':
             flash('Musíte vybrat soubor!', 'danger')
             return redirect(request.url)
-        file = request.files['file']
+        file = request.form['file']
 
-        # If the user does not select a file, the browser submits an empty file without a filename.
-        if not file or file.filename == '':
-            flash('Musíte vybrat soubor!', 'danger')
+        if file[:23] != "data:image/jpeg;base64,":
+            flash('Vybraný soubor není podporován.', 'danger')
             return redirect(request.url)
-
-        # check the extension
-        if '.' not in file.filename:
-            extension = ""
-        else:
-            extension = file.filename.rsplit('.', 1)[1].lower()
-        if extension not in config['allowed_extensions']:
-            flash(f"Soubor s příponou '{extension}' není podporován, povolené přípony jsou: {allowed_extensions}.", "danger")
-            return redirect(request.url)
+        file = file[23:]
 
         # save the uploaded file
-        filename = f"{current_user.id_user}_{uuid.uuid4()}.{extension}"
+        filename = f"{current_user.id_user}_{uuid.uuid4()}.jpg"
         file_path = os.path.join(config['upload_folder'], filename)
-        file.save(file_path)
+        with open(file_path, "wb") as image_file:
+            image_file.write(base64.decodebytes(file.encode()))
 
         # create a post in database
         post = Post(file_path, current_user.id_user)

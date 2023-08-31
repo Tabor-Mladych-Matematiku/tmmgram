@@ -3,10 +3,52 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1 class="logo">Upload</h1>
+    <h1>Nahrát fotku</h1>
 
     <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" accept="{{ allowed_extensions }}">
-        <input type="submit" value="Upload">
+        <div class="mb-3">
+          <input class="form-control" type="file" id="user_file" accept="{{ allowed_extensions }}">
+          <input type="hidden" id="file" name="file">
+
+        </div>
+
+        <button class="btn btn-primary" type="submit" id="submit">
+            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+            Nahrát
+        </button>
     </form>
+
+    <script src="https://cdn.jsdelivr.net/npm/compressorjs@1.2.1/dist/compressor.min.js" crossorigin="anonymous"></script>
+    <!--suppress JSUnresolvedReference (Compressor is loaded from CDN) -->
+    <script>
+    const file_input = document.getElementById("file");
+    const user_file_input = document.getElementById("user_file");
+    const submit_button = document.getElementById("submit");
+
+    user_file_input.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+
+        if (!file) {
+            return;
+        }
+
+        submit_button.disabled = true;
+
+        new Compressor(file, {
+            quality: 0.7,
+            maxWidth: 2048,
+            maxHeight: 2048,
+            convertTypes: ['image/png', "image/webp", "image/heic"],
+            convertSize: 0,
+            success(result) {
+                const reader = new FileReader();
+                reader.readAsDataURL(result);
+                reader.onloadend = function() {
+                    file_input.value = reader.result;
+                    submit_button.disabled = false;
+                }
+            },
+        });
+    });
+    </script>
 {% endblock content %}
