@@ -7,18 +7,25 @@
 
     <form action="/upload" method="post" enctype="multipart/form-data">
         <div class="mb-3">
-            <input class="form-control" type="file" id="user_file" accept="{{ allowed_files }}" required>
-            <div class="invalid-feedback">
-                Chyba při zpracování fotky. Vyberte jinou fotku.
+            <input class="form-control is-invalid" type="file" id="user_file" accept="{{ allowed_files }}" required>
+            <div class="invalid-feedback" id="validity_message">
+                Nejprve vyberte fotku.
             </div>
+            <div class="valid-feedback">
+                Fotka je připravena pro nahrání.
+            </div>
+            <div class="text-primary d-none mt-1" role="status" id="spinner">
+                <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                Probíhá zpracování fotky.
+            </div>
+
 
           <input type="hidden" id="file" name="file" required>
 
         </div>
 
-        <button class="btn btn-primary" type="submit" id="submit">
-            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-            <span id="submit_text">Nejdřív vyberte fotku</span>
+        <button class="btn btn-primary" type="submit" id="submit" disabled>
+            Nahrát fotku
         </button>
     </form>
 
@@ -29,7 +36,25 @@
         const file_input = document.getElementById("file");
         const user_file_input = document.getElementById("user_file");
         const submit_button = document.getElementById("submit");
-        const submit_button_text = document.getElementById("submit_text");
+        const spinner = document.getElementById("spinner");
+        const validity_message = document.getElementById("validity_message");
+
+        const compression_started = () => {
+            submit_button.disabled = true;
+            user_file_input.classList.remove("is-invalid");
+            user_file_input.classList.remove("is-valid");
+            spinner.classList.remove("d-none");
+        }
+        const compression_successful = () => {
+            submit_button.disabled = false;
+            user_file_input.classList.add("is-valid");
+            spinner.classList.add("d-none");
+        }
+        const compression_failed = () => {
+            user_file_input.classList.add("is-invalid");
+            validity_message.innerText = "Chyba při zpracování fotky. Vyberte jinou fotku.";
+            spinner.classList.add("d-none");
+        }
 
         user_file_input.addEventListener("change", (e) => {
             const file = e.target.files[0];
@@ -38,9 +63,7 @@
                 return;
             }
 
-            submit_button.disabled = true;
-            submit_button_text.innerText = "Probíhá zpracování fotky";
-            user_file_input.classList.remove("is-invalid");
+            compression_started();
 
             new Compressor(file, {
                 quality: 0.7,
@@ -53,15 +76,12 @@
                     reader.readAsDataURL(result);
                     reader.onloadend = function() {
                         file_input.value = reader.result;
-                        submit_button.disabled = false;
-                        submit_button_text.innerText = "Nahrát fotku";
+                        compression_successful();
                     }
                 },
                 error(err) {
                     user_file_input.value = null;
-                    user_file_input.classList.add("is-invalid");
-                    submit_button.disabled = false;
-                    submit_button_text.innerText = "Vyberte jinou fotku";
+                    compression_failed();
                     console.log(err);
                 }
             });
