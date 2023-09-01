@@ -2,7 +2,7 @@ import base64
 import os
 import uuid
 
-from flask import redirect, request, flash, Blueprint, url_for, send_from_directory
+from flask import redirect, request, flash, Blueprint, send_from_directory
 from flask_login import login_required, current_user
 
 from config import config
@@ -10,8 +10,6 @@ from db_model import Post, db
 from helpers import render
 
 upload_blueprint = Blueprint('upload', __name__, template_folder='templates', static_folder='static')
-
-allowed_extensions = ", ".join(f".{ext}" for ext in config['allowed_extensions'])
 
 
 @upload_blueprint.route('/upload', methods=("GET", "POST"))
@@ -43,7 +41,7 @@ def upload():
         flash(f"Soubor byl úspěšně nahrán.", "success")
         return redirect("/")
 
-    return render("upload.html", title="Nahrát soubor", allowed_extensions=allowed_extensions)
+    return render("upload.html", title="Nahrát soubor", allowed_files=config['allowed_files'])
 
 
 @upload_blueprint.route('/uploads/<name>')

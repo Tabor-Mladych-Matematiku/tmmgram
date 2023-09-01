@@ -7,7 +7,7 @@
 
     <form action="/upload" method="post" enctype="multipart/form-data">
         <div class="mb-3">
-          <input class="form-control" type="file" id="user_file" accept="{{ allowed_extensions }}">
+          <input class="form-control" type="file" id="user_file" accept="{{ allowed_files }}">
           <input type="hidden" id="file" name="file">
 
         </div>
@@ -19,7 +19,7 @@
     </form>
 
     <script src="https://cdn.jsdelivr.net/npm/compressorjs@1.2.1/dist/compressor.min.js" crossorigin="anonymous"></script>
-    <!--suppress JSUnresolvedReference (Compressor is loaded from CDN) -->
+
     <script>
     const file_input = document.getElementById("file");
     const user_file_input = document.getElementById("user_file");
@@ -38,7 +38,7 @@
             quality: 0.7,
             maxWidth: 2048,
             maxHeight: 2048,
-            convertTypes: ['image/png', "image/webp", "image/heic"],
+            convertTypes: "{{ allowed_files }}",
             convertSize: 0,
             success(result) {
                 const reader = new FileReader();
