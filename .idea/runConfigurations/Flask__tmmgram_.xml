@@ -1,5 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Flask (tmmgram)" type="Python.FlaskServer" nameIsGenerated="true">
+    <option name="additionalOptions" value="--host=0.0.0.0" />
     <option name="flaskDebug" value="true" />
     <module name="tmmgram" />
     <option name="target" value="tmmgram" />

@@ -7,48 +7,68 @@
 
     <form action="/upload" method="post" enctype="multipart/form-data">
         <div class="mb-3">
-          <input class="form-control" type="file" id="user_file" accept="{{ allowed_files }}">
-          <input type="hidden" id="file" name="file">
+            <input class="form-control" type="file" id="user_file" accept="{{ allowed_files }}" required>
+            <div class="invalid-feedback">
+                Chyba při zpracování fotky. Vyberte jinou fotku.
+            </div>
+
+          <input type="hidden" id="file" name="file" required>
 
         </div>
 
         <button class="btn btn-primary" type="submit" id="submit">
             <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-            Nahrát
+            <span id="submit_text">Nejdřív vyberte fotku</span>
         </button>
     </form>
 
     <script src="https://cdn.jsdelivr.net/npm/compressorjs@1.2.1/dist/compressor.min.js" crossorigin="anonymous"></script>
 
     <script>
-    const file_input = document.getElementById("file");
-    const user_file_input = document.getElementById("user_file");
-    const submit_button = document.getElementById("submit");
+    (() => {
+        const file_input = document.getElementById("file");
+        const user_file_input = document.getElementById("user_file");
+        const submit_button = document.getElementById("submit");
+        const submit_button_text = document.getElementById("submit_text");
 
-    user_file_input.addEventListener("change", (e) => {
-        const file = e.target.files[0];
+        user_file_input.addEventListener("change", (e) => {
+            const file = e.target.files[0];
 
-        if (!file) {
-            return;
-        }
+            if (!file) {
+                return;
+            }
 
-        submit_button.disabled = true;
+            submit_button.disabled = true;
+            submit_button_text.innerText = "Probíhá zpracování fotky";
+            user_file_input.classList.remove("is-invalid");
 
-        new Compressor(file, {
-            quality: 0.7,
-            maxWidth: 2048,
-            maxHeight: 2048,
-            convertTypes: "{{ allowed_files }}",
-            convertSize: 0,
-            success(result) {
-                const reader = new FileReader();
-                reader.readAsDataURL(result);
-                reader.onloadend = function() {
-                    file_input.value = reader.result;
+            new Compressor(file, {
+                quality: 0.7,
+                maxWidth: 2048,
+                maxHeight: 2048,
+                convertTypes: "{{ allowed_files }}",
+                convertSize: 0,
+                success(result) {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(result);
+                    reader.onloadend = function() {
+                        file_input.value = reader.result;
+                        submit_button.disabled = false;
+                        submit_button_text.innerText = "Nahrát fotku";
+                    }
+                },
+                error(err) {
+                    user_file_input.value = null;
+                    user_file_input.classList.add("is-invalid");
                     submit_button.disabled = false;
+                    submit_button_text.innerText = "Vyberte jinou fotku";
+                    console.log(err);
                 }
-            },
+            });
         });
-    });
+        // clear the input on refresh
+        file_input.value = null;
+        user_file_input.value = null;
+    })()
     </script>
 {% endblock content %}
