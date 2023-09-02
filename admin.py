@@ -13,3 +13,7 @@ def admin():
 
 from admin_users import users_blueprint
 admin_blueprint.register_blueprint(users_blueprint)
+from admin_locations import locations_blueprint
+admin_blueprint.register_blueprint(locations_blueprint)
+from admin_post_rating import rating_blueprint
+admin_blueprint.register_blueprint(rating_blueprint)

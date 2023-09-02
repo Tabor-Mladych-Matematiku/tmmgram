@@ -10,7 +10,7 @@ users_blueprint = Blueprint('users', __name__, template_folder='templates', stat
 @admin_required
 def users_list():
     users = User.query.order_by(User.name).all()
-    return render("users.html", users=users)
+    return render("users_list.html", users=users)
 
 
 @users_blueprint.route('/admin/users/new', methods=("GET", "POST"))

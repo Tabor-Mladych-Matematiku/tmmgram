@@ -2,6 +2,8 @@ secret: "test"
 admin_password: "admin"
 timezone: 'Europe/Prague'
 upload_folder: 'uploads'
+approved_folder: 'approved'
+rejected_folder: 'rejected'
 allowed_files: 'image/jpeg,image/webp,image/png,image/heic'  # TODO: test heic on iPhone
 # for debugging using a local SQLite database, remove the `db` section
 db:

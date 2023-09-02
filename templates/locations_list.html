@@ -1,0 +1,23 @@
+{# templates/locations_list.html #}
+
+{% extends "base_admin.html" %}
+
+{% block content_admin %}
+    <h1>Stanoviště</h1>
+    <ul class="list-group mb-3">
+        {% for location in locations %}
+            <li class="list-group-item d-flex align-items-center">
+                <div class="flex-fill">
+                    {{ location.name }}
+                </div>
+                <div>
+                    <a class="btn btn-warning" href="/admin/locations/{{ location.id_location }}" role="button"><i class="bi bi-pencil-square"></i></a>
+                    <form method="post" action="/admin/locations/{{ location.id_location }}/delete" class="d-inline" onsubmit='return confirm("Smazat \"{{ location.name }}\"?")'>
+                        <button type="submit" class="btn btn-danger"><i class="bi bi-trash-fill"></i></button>
+                    </form>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+    <a class="btn btn-primary mb-1 me-1" href="/admin/locations/new" role="button">Přidat stanoviště</a>
+{% endblock content_admin %}

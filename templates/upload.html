@@ -18,10 +18,16 @@
                 <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                 Probíhá zpracování fotky.
             </div>
+        </div>
+        <input type="hidden" id="file" name="file" required>
 
-
-          <input type="hidden" id="file" name="file" required>
-
+        <div class="mb-3">
+            <label for="location" class="form-label">Stanoviště</label>
+            <select class="form-select" id="location" name="location" required>
+                {% for location in locations %}
+                    <option value="{{ location.id_location }}">{{ location.name }}</option>
+                {% endfor %}
+            </select>
         </div>
 
         <button class="btn btn-primary" type="submit" id="submit" disabled>

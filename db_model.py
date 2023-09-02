@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 
 from flask_bcrypt import Bcrypt
@@ -6,6 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship, backref
 
 from abstract import Abstract
+from config import config
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
@@ -59,18 +61,55 @@ class User(db.Model, AbstractUser):
         self.password = bcrypt.generate_password_hash(password_plain)
 
 
+class Location(db.Model):
+    __tablename__ = "locations"
+
+    id_location = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(256), nullable=False)
+    followers_coefficient = db.Column(db.Float, nullable=False)
+
+    def __init__(self, name, followers_coefficient):
+        self.name = name
+        self.followers_coefficient = followers_coefficient
+
+
 class Post(db.Model):
 
     __tablename__ = "posts"
 
     id_post = db.Column(db.Integer, primary_key=True)
     id_user = db.Column(db.Integer, db.ForeignKey(User.id_user, ondelete='RESTRICT'))
-    src = db.Column(db.String(256), nullable=False)
+    filename = db.Column(db.String(256), nullable=False)
     timestamp = db.Column(db.DateTime)
+    id_location = db.Column(db.Integer, db.ForeignKey(Location.id_location, ondelete='RESTRICT'))
 
+    approved = db.Column(db.Boolean, nullable=True, default=None)
+    followers = db.Column(db.Integer, nullable=True, default=None)
+
+    # save the rating values for reference
+    task_points = db.Column(db.Integer, nullable=True, default=None)
+    photo_points = db.Column(db.Integer, nullable=True, default=None)
+    followers_at_time_of_post = db.Column(db.Integer, nullable=True, default=None)
+
+    # relationships
     user = relationship("User", backref=backref("users", uselist=False))
+    location = relationship("Location", backref=backref("locations", uselist=False))
 
-    def __init__(self, src, id_user):
+    def __init__(self, filename, id_user, id_location):
         self.id_user = id_user
-        self.src = src
+        self.id_location = id_location
+        self.filename = filename
         self.timestamp = datetime.now()
+
+    @property
+    def src(self):
+        return "/photos/" + self.filename
+
+    @property
+    def file_path(self):
+        if self.approved is None:
+            return os.path.join(config['upload_folder'], self.filename)
+        elif self.approved:
+            return os.path.join(config['approved_folder'], self.filename)
+        else:
+            return os.path.join(config['rejected_folder'], self.filename)

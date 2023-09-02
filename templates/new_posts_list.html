@@ -1,0 +1,15 @@
+{# templates/new_posts_list.html #}
+
+{% extends "base_admin.html" %}
+
+{% block content_admin %}
+    <h1>Příspěvky k hodnocení</h1>
+
+    {% for post in posts %}
+        <article class="post">
+            <img src="{{ post.src }}">
+            {{ post.timestamp }}
+            <a href="/admin/rate/{{ post.id_post }}">Ohodnotit</a>
+        </article>
+    {% endfor %}
+{% endblock content_admin %}

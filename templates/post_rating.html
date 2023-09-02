@@ -1,0 +1,14 @@
+{# templates/post_rating.html #}
+
+{% extends "base_admin.html" %}
+
+{% block content_admin %}
+    {# TODO: display image #}
+    <form method="post" action="/admin/rate/{{ post.id_post }}/approve">
+        {# TODO: set rating #}
+        <button type="submit" class="btn btn-primary mb-1 me-1">Potvrdit</button>
+    </form>
+    <form method="post" action="/admin/rate/{{ post.id_post }}/reject">
+        <button type="submit" class="btn btn-danger mb-1 me-1">Zamítnout</button>
+    </form>
+{% endblock content_admin %}

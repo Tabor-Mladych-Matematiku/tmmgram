@@ -1,7 +1,7 @@
-from flask import Flask
+from flask import Flask, send_from_directory
 from flask_login import LoginManager, login_required
 
-from db_model import db, bcrypt, Admin, User
+from db_model import db, bcrypt, Admin, User, Post
 from config import config
 from helpers import render
 
@@ -62,6 +62,8 @@ def load_user(user_id):
 # uploads folder
 
 os.makedirs(config['upload_folder'], exist_ok=True)
+os.makedirs(config['approved_folder'], exist_ok=True)
+os.makedirs(config['rejected_folder'], exist_ok=True)
 app.config['MAX_CONTENT_LENGTH'] = 16_000_000  # 16 MB  # TODO
 
 
@@ -77,3 +79,15 @@ from profile import profile_blueprint
 app.register_blueprint(profile_blueprint)
 from feed import feed_blueprint
 app.register_blueprint(feed_blueprint)
+
+
+# serve images
+@app.route(f'/photos/<filename>')
+def download_file(filename):
+    post: Post = Post.query.filter_by(filename=filename).first()
+    if post.approved is None:
+        return send_from_directory(config["upload_folder"], filename)
+    elif post.approved:
+        return send_from_directory(config["approved_folder"], filename)
+    else:
+        return send_from_directory(config["rejected_folder"], filename)

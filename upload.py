@@ -5,6 +5,7 @@ import uuid
 from flask import redirect, request, flash, Blueprint, send_from_directory
 from flask_login import login_required, current_user
 
+from admin_locations import get_all_locations
 from config import config
 from db_model import Post, db
 from helpers import render
@@ -16,6 +17,8 @@ upload_blueprint = Blueprint('upload', __name__, template_folder='templates', st
 @login_required
 def upload():
     if request.method == "POST":
+        location = request.form['location']
+
         # check if the file was uploaded
         if 'file' not in request.form or request.form['file'] == '':
             flash('Musíte vybrat soubor!', 'danger')
@@ -34,16 +37,11 @@ def upload():
             image_file.write(base64.decodebytes(file.encode()))
 
         # create a post in database
-        post = Post(file_path, current_user.id_user)
+        post = Post(filename, current_user.id_user, location)
         db.session.add(post)
         db.session.commit()
 
         flash(f"Soubor byl úspěšně nahrán.", "success")
         return redirect("/")
 
-    return render("upload.html", title="Nahrát soubor", allowed_files=config['allowed_files'])
-
-
-@upload_blueprint.route('/uploads/<name>')
-def download_file(name):
-    return send_from_directory(config["upload_folder"], name)
+    return render("upload.html", title="Nahrát soubor", allowed_files=config['allowed_files'], locations=get_all_locations())
