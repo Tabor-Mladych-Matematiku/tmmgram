@@ -51,13 +51,3 @@ button .spinner-border {
 button:disabled .spinner-border {
     display: inline-block;
 }
-
-/* Posts */
-
-.post {
-    max-width: 100%;
-}
-
-.post img {
-    width: 100%;
-}

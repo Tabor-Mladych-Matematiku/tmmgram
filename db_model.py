@@ -133,3 +133,7 @@ class Post(db.Model):
             return os.path.join(config['approved_folder'], self.filename)
         else:
             return os.path.join(config['rejected_folder'], self.filename)
+
+    @property
+    def time(self):
+        return self.timestamp.strftime("%H:%M")
