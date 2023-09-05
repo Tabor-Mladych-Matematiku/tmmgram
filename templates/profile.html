@@ -3,7 +3,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>{{ user.name }}</h1>
+    <h1>{{ user.name_with_badge | safe }}</h1>
     <h2>TODO: number of followers</h2>
 
     {% include "posts.html" %}

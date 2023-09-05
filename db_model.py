@@ -60,6 +60,14 @@ class User(db.Model, AbstractUser):
     def set_password(self, password_plain):
         self.password = bcrypt.generate_password_hash(password_plain)
 
+    @property
+    def is_verified(self):
+        return self.name.lower() == "elis"
+
+    @property
+    def name_with_badge(self):  # use with "| safe" flask filter to render HTML
+        return self.name + (' <i class="bi bi-patch-check-fill text-info"></i>' if self.is_verified else '')
+
 
 class Location(db.Model):
     __tablename__ = "locations"
