@@ -4,6 +4,7 @@ from datetime import datetime
 from flask_bcrypt import Bcrypt
 from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 from sqlalchemy.orm import relationship, backref
 
 from abstract import Abstract
@@ -67,6 +68,17 @@ class User(db.Model, AbstractUser):
     @property
     def name_with_badge(self):  # use with "| safe" flask filter to render HTML
         return self.name + (' <i class="bi bi-patch-check-fill text-info"></i>' if self.is_verified else '')
+
+    @property
+    def followers(self):
+        post_followers = (db.session.query(func.sum(Post.followers))
+                          .filter(Post.id_user == self.id_user)
+                          .filter(Post.approved.is_(True))
+                          .first())[0]
+        if post_followers is None:
+            post_followers = 0
+        # TODO: add "fake followers"
+        return post_followers
 
 
 class Location(db.Model):

@@ -4,7 +4,7 @@
 
 {% block content %}
     <h1>{{ user.name_with_badge | safe }}</h1>
-    <h2>TODO: number of followers</h2>
+    <h2>Sledující: {{ user.followers }}</h2>
 
     {% include "posts.html" %}
 
