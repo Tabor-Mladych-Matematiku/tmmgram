@@ -10,5 +10,9 @@ feed_blueprint = Blueprint('feed', __name__, template_folder='templates', static
 @feed_blueprint.route('/')
 @login_required
 def render_feed():
-    posts: list[Post] = Post.query.order_by(Post.timestamp.desc()).limit(10).all()
+    posts: list[Post] = (Post.query
+                         .filter(Post.approved.is_(True))
+                         .order_by(Post.timestamp.desc())
+                         .limit(10)
+                         .all())
     return render('index.html', posts=posts)

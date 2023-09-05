@@ -24,5 +24,9 @@ def profile(name):
 
 
 def render_profile(user: User):
-    posts: list[Post] = Post.query.filter_by(id_user=user.id_user).order_by(Post.timestamp.desc()).all()
+    posts: list[Post] = (Post.query
+                         .filter_by(id_user=user.id_user)
+                         .filter(Post.approved.is_(True))
+                         .order_by(Post.timestamp.desc())
+                         .all())
     return render('profile.html', user=user, posts=posts)
