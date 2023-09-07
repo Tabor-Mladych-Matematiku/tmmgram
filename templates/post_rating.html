@@ -3,12 +3,17 @@
 {% extends "base_admin.html" %}
 
 {% block content_admin %}
-    {# TODO: display image #}
-    <form method="post" action="/admin/rate/{{ post.id_post }}/approve">
-        {# TODO: set rating #}
-        <button type="submit" class="btn btn-primary mb-1 me-1">Potvrdit</button>
-    </form>
-    <form method="post" action="/admin/rate/{{ post.id_post }}/reject">
-        <button type="submit" class="btn btn-danger mb-1 me-1">Zamítnout</button>
-    </form>
+    <article class="card mb-3">
+        {% include "post_inner.html" %}
+
+        <div class="card-footer">
+            <form method="post" action="/admin/rate/{{ post.id_post }}/approve">
+                {# TODO: set rating #}
+                <button type="submit" class="btn btn-primary mb-1 me-1">Potvrdit</button>
+            </form>
+            <form method="post" action="/admin/rate/{{ post.id_post }}/reject">
+                <button type="submit" class="btn btn-danger mb-1 me-1">Zamítnout</button>
+            </form>
+        </div>
+    </article>
 {% endblock content_admin %}

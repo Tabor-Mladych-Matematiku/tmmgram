@@ -18,6 +18,7 @@ upload_blueprint = Blueprint('upload', __name__, template_folder='templates', st
 def upload():
     if request.method == "POST":
         location = request.form['location']
+        description = request.form['description']
 
         # check if the file was uploaded
         if 'file' not in request.form or request.form['file'] == '':
@@ -37,7 +38,7 @@ def upload():
             image_file.write(base64.decodebytes(file.encode()))
 
         # create a post in database
-        post = Post(filename, current_user.id_user, location)
+        post = Post(filename, current_user.id_user, location, description)
         db.session.add(post)
         db.session.commit()
 

@@ -1,0 +1,17 @@
+{# templates/post_inner.html #}
+
+{# this is expected to be inside `<article class="card mb-3">` with the variable `post` defined #}
+
+<div class="card-body">
+    <h5 class="card-title"><a href="/profile/{{ post.user.name }}" class="text-reset text-decoration-none">
+        {{ post.user.name_with_badge | safe }}</a>
+    </h5>
+    <h6 class="card-subtitle mb-2 text-muted">
+        {{ post.location.name }},
+        {{ post.time }}
+    </h6>
+</div>
+<img src="{{ post.src }}" class="card-img" alt="photo">
+<div class="card-body">
+    <p class="card-text">{{ post.description }}</p>
+</div>

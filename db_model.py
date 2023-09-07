@@ -102,6 +102,7 @@ class Post(db.Model):
     filename = db.Column(db.String(256), nullable=False)
     timestamp = db.Column(db.DateTime)
     id_location = db.Column(db.Integer, db.ForeignKey(Location.id_location, ondelete='RESTRICT'))
+    description = db.Column(db.Text, nullable=False, default='')
 
     approved = db.Column(db.Boolean, nullable=True, default=None)
     followers = db.Column(db.Integer, nullable=True, default=None)
@@ -115,10 +116,11 @@ class Post(db.Model):
     user = relationship("User", backref=backref("users", uselist=False))
     location = relationship("Location", backref=backref("locations", uselist=False))
 
-    def __init__(self, filename, id_user, id_location):
+    def __init__(self, filename, id_user, id_location, description):
         self.id_user = id_user
         self.id_location = id_location
         self.filename = filename
+        self.description = description
         self.timestamp = datetime.now()
 
     @property
