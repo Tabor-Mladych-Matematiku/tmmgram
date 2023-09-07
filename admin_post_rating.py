@@ -3,7 +3,7 @@ import os
 from flask import request, redirect, flash, Blueprint
 
 from config import config
-from db_model import db, Post
+from db_model import db, Post, Location
 from helpers import render, admin_required
 
 rating_blueprint = Blueprint('rating', __name__, template_folder='templates', static_folder='static')
@@ -13,14 +13,17 @@ rating_blueprint = Blueprint('rating', __name__, template_folder='templates', st
 @admin_required
 def new_posts_list():
     posts = Post.query.filter(Post.approved.is_(None)).order_by(Post.timestamp).all()
-    return render("new_posts_list.html", posts=posts)
+    locations = Location.query.all()
+    return render("new_posts_list.html", posts=posts, locations=locations)
 
 
 @rating_blueprint.route('/admin/new_posts/<id_location>')
 @admin_required
 def new_posts_list_at_location(id_location):
     posts = Post.query.filter(Post.approved.is_(None)).filter_by(id_location=id_location).order_by(Post.timestamp).all()
-    return render("new_posts_list.html", posts=posts)
+    locations = Location.query.all()
+    current_location = Location.query.get(id_location)
+    return render("new_posts_list.html", posts=posts, locations=locations, current_location=current_location)
 
 
 @rating_blueprint.route('/admin/rate/<id_post>')

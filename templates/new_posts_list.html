@@ -3,7 +3,25 @@
 {% extends "base_admin.html" %}
 
 {% block content_admin %}
-    <h1>Příspěvky k hodnocení</h1>
+    <h1>
+        Příspěvky k hodnocení
+        {% if current_location %}
+            &ndash; {{ current_location.name }}
+        {% endif %}
+    </h1>
+
+    <div class="dropdown mb-3">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Vybrat stanoviště
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/admin/new_posts">Všechna stanoviště</a></li>
+            <li><hr class="dropdown-divider"></li>
+            {% for location in locations %}
+                <li><a class="dropdown-item" href="/admin/new_posts/{{ location.id_location }}">{{ location.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
 
     {% for post in posts %}
         <article class="card mb-3">
