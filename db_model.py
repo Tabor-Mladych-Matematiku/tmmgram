@@ -48,6 +48,7 @@ class User(db.Model, AbstractUser):
     name = db.Column(db.String(256), nullable=False)
     password = db.Column(db.String(256), nullable=False)
     note = db.Column(db.Text, nullable=True)
+    fake_followers = db.Column(db.Integer, nullable=False, default=0)
 
     @property
     def id(self):
@@ -77,8 +78,7 @@ class User(db.Model, AbstractUser):
                           .first())[0]
         if post_followers is None:
             post_followers = 0
-        # TODO: add "fake followers"
-        return post_followers
+        return post_followers + self.fake_followers
 
 
 class Location(db.Model):

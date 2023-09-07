@@ -37,6 +37,7 @@ def users_edit(id_user):
         if request.form["password"]:
             user.set_password(request.form["password"])
         user.note = request.form["note"]
+        user.fake_followers = request.form["fake_followers"]
         db.session.add(user)
         db.session.commit()
         return redirect("/admin/users")

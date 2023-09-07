@@ -29,6 +29,37 @@
             </div>
         </div>
         <div class="row mb-3">
+            <label class="col-3 form-label required">Falešní followeři</label>
+            <div class="col-3">
+                <label class="form-label" for="fake_followers_original">Původní počet</label>
+                <input type="number" class="form-control" id="fake_followers_original" disabled value="{{ user.fake_followers if user else 0 }}">
+            </div>
+            <div class="col-3">
+                <label class="form-label" for="fake_followers_add">Přičíst</label>
+                <input type="number" class="form-control" id="fake_followers_add" value="0">
+            </div>
+            <div class="col-3">
+                <label class="form-label" for="fake_followers_new">Nový počet</label>
+                <input type="number" class="form-control" id="fake_followers_new" name="fake_followers" required value="{{ user.fake_followers if user else 0 }}">
+            </div>
+        </div>
+        <script>
+        (() => {
+            const fake_followers_original = document.getElementById("fake_followers_original");
+            const fake_followers_add = document.getElementById("fake_followers_add");
+            const fake_followers_new = document.getElementById("fake_followers_new");
+
+            fake_followers_add.addEventListener("change", () => {
+                fake_followers_new.value = Number(fake_followers_original.value) + Number(fake_followers_add.value);
+            });
+            fake_followers_new.addEventListener("change", () => {
+                fake_followers_add.value = Number(fake_followers_new.value) - Number(fake_followers_original.value);
+            });
+            // clear the input on refresh
+            fake_followers_add.value = 0;
+        })()
+        </script>
+        <div class="row mb-3">
             <div class="col">
                 <button type="submit" class="btn btn-primary mb-1 me-1">Uložit</button>
                 <a class="btn btn-secondary mb-1 me-1" href="/admin/users" role="button">Zpět</a>
