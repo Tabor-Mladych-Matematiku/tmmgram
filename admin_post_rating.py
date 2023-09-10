@@ -37,7 +37,9 @@ def post_rating(id_post):
     return render("post_rating.html", post=post)
 
 
-def rate_post(id_post, approved):
+@rating_blueprint.route('/admin/rate/<id_post>/approve', methods=['POST'])
+@admin_required
+def post_approve(id_post):
     post: Post = Post.query.get(id_post)
     if post is None:
         flash(f"Příspěvěk s id_post={id_post} neexistuje.", "warning")
@@ -45,25 +47,38 @@ def rate_post(id_post, approved):
 
     old_file_path = post.file_path
 
-    post.approved = approved
+    post.approved = True
+    post.followers = request.form['followers']
+    post.task_points = request.form['task_points']
+    post.photo_points = request.form['photo_points']
     db.session.add(post)
     db.session.commit()
 
     new_file_path = post.file_path
     os.rename(old_file_path, new_file_path)
 
-    flash("Příspěvek potrvrzen." if approved else "Příspěvek zamítnut.", "success")
+    flash("Příspěvek potrvrzen.", "success")
 
     return redirect(f"/admin/new_posts/{post.id_location}")
-
-
-@rating_blueprint.route('/admin/rate/<id_post>/approve', methods=['POST'])
-@admin_required
-def post_approve(id_post):
-    return rate_post(id_post, True)
 
 
 @rating_blueprint.route('/admin/rate/<id_post>/reject', methods=['POST'])
 @admin_required
 def post_reject(id_post):
-    return rate_post(id_post, False)
+    post: Post = Post.query.get(id_post)
+    if post is None:
+        flash(f"Příspěvěk s id_post={id_post} neexistuje.", "warning")
+        return redirect("/admin/new_posts")
+
+    old_file_path = post.file_path
+
+    post.approved = False
+    db.session.add(post)
+    db.session.commit()
+
+    new_file_path = post.file_path
+    os.rename(old_file_path, new_file_path)
+
+    flash("Příspěvek zamítnut.", "success")
+
+    return redirect(f"/admin/new_posts/{post.id_location}")

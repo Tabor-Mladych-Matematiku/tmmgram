@@ -116,11 +116,12 @@ class Post(db.Model):
     user = relationship("User", backref=backref("users", uselist=False))
     location = relationship("Location", backref=backref("locations", uselist=False))
 
-    def __init__(self, filename, id_user, id_location, description):
-        self.id_user = id_user
+    def __init__(self, filename, user: User, id_location, description):
+        self.id_user = user.id_user
         self.id_location = id_location
         self.filename = filename
         self.description = description
+        self.followers_at_time_of_post = user.followers
         self.timestamp = datetime.now()
 
     @property

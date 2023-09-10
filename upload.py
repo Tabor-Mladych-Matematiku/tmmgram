@@ -38,7 +38,7 @@ def upload():
             image_file.write(base64.decodebytes(file.encode()))
 
         # create a post in database
-        post = Post(filename, current_user.id_user, location, description)
+        post = Post(filename, current_user, location, description)
         db.session.add(post)
         db.session.commit()
 

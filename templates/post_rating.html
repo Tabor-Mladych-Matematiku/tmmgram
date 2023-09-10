@@ -7,11 +7,84 @@
         {% include "post_inner.html" %}
 
         <div class="card-footer">
-            <form method="post" action="/admin/rate/{{ post.id_post }}/approve">
-                {# TODO: set rating #}
+            <div class="mb-4">
+                <label for="range_task" class="form-label">Splnění úkolu</label>
+                <input type="range" class="form-range mb-2" id="range_task" min="0" max="100" step="1" value="50">
+                <input type="number" class="form-control mb-2" id="number_task" name="task_points" form="form-approve" min="0" max="100" step="1" value="50">
+            </div>
+            <div class="mb-4">
+                <label for="range_photo" class="form-label">Kreativity fotky</label>
+                <input type="range" class="form-range mb-2" id="range_photo" min="0" max="100" step="1" value="50">
+                <input type="number" class="form-control mb-2" id="number_photo" name="photo_points" form="form-approve" min="0" max="100" step="1" value="50">
+            </div>
+            <!-- TODO: for debugging, set input type to "number" (and don't forget to revert it to "hidden") -->
+            <input type="hidden" id="followers_at_time_of_post" value="{{ post.followers_at_time_of_post }}">
+            <input type="hidden" id="followers_coefficient" value="{{ post.location.followers_coefficient }}">
+            <input type="hidden" id="followers" name="followers" form="form-approve" value="0">
+
+            <script> // adapted from ChatGPT
+                const range_task = document.getElementById('range_task');
+                const number_task = document.getElementById('number_task');
+                const range_photo = document.getElementById('range_photo');
+                const number_photo = document.getElementById('number_photo');
+                const followers_at_time_of_post = document.getElementById('followers_at_time_of_post');
+                const followers_coefficient = document.getElementById('followers_coefficient');
+                const followers = document.getElementById('followers');
+
+                // Add event listeners to the range inputs
+                range_task.addEventListener('input', () => {
+                    number_task.value = range_task.value;
+                    computeNewFollowers();
+                });
+
+                range_photo.addEventListener('input', () => {
+                    number_photo.value = range_photo.value;
+                    computeNewFollowers();
+                });
+
+                // Add event listeners to the number-type inputs
+                number_task.addEventListener('input', () => {
+                    // Ensure the value is within the range
+                    if (number_task.value < parseInt(number_task.min)) {
+                        number_task.value = number_task.min;
+                    } else if (number_task.value > parseInt(number_task.max)) {
+                        number_task.value = number_task.max;
+                    }
+                    range_task.value = number_task.value;
+                    computeNewFollowers();
+                });
+
+                number_photo.addEventListener('input', () => {
+                    // Ensure the value is within the range
+                    if (number_photo.value < parseInt(number_photo.min)) {
+                        number_photo.value = number_photo.min;
+                    } else if (number_photo.value > parseInt(number_photo.max)) {
+                        number_photo.value = number_photo.max;
+                    }
+                    range_photo.value = number_photo.value;
+                    computeNewFollowers();
+                });
+
+                function computeNewFollowers() {
+                    const task_points = parseInt(number_task.value) / 100.0;
+                    const photo_points = parseInt(number_photo.value) / 100.0;
+                    const coefficient = parseFloat(followers_coefficient.value);
+                    let old_followers = parseInt(followers_at_time_of_post.value);
+                    old_followers += 1;  // TODO: deal with 0 followers at the start of the game
+
+                    // TODO: update the formula
+                    const new_followers = task_points * photo_points * coefficient * old_followers
+
+                    followers.value = Math.ceil(new_followers)
+                }
+
+                computeNewFollowers();
+            </script>
+
+            <form method="post" action="/admin/rate/{{ post.id_post }}/approve" class="d-inline-block" id="form-approve">
                 <button type="submit" class="btn btn-primary mb-1 me-1">Potvrdit</button>
             </form>
-            <form method="post" action="/admin/rate/{{ post.id_post }}/reject">
+            <form method="post" action="/admin/rate/{{ post.id_post }}/reject" class="d-inline-block float-end">
                 <button type="submit" class="btn btn-danger mb-1 me-1">Zamítnout</button>
             </form>
         </div>
