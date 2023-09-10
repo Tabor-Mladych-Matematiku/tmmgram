@@ -53,3 +53,7 @@ button .spinner-border {
 button:disabled .spinner-border {
     display: inline-block;
 }
+
+img#thumbnail[src=""] {
+    display: none !important;
+}

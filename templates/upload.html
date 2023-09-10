@@ -20,6 +20,9 @@
             </div>
         </div>
         <input type="hidden" id="file" name="file" required>
+        <div class="mb-3">
+            <img src="" class="img-thumbnail mx-auto d-block" alt="Náhled fotky" width="70%" id="thumbnail">
+        </div>
 
         <div class="mb-3">
             <label for="location" class="form-label">Stanoviště</label>
@@ -35,7 +38,7 @@
             <textarea class="form-control" id="description" name="description" rows="3"></textarea>
         </div>
 
-        <button class="btn btn-primary" type="submit" id="submit" disabled>
+        <button class="btn btn-primary mb-3" type="submit" id="submit" disabled>
             Nahrát fotku
         </button>
     </form>
@@ -49,12 +52,15 @@
         const submit_button = document.getElementById("submit");
         const spinner = document.getElementById("spinner");
         const validity_message = document.getElementById("validity_message");
+        const thumbnail = document.getElementById("thumbnail");
 
         const compression_started = () => {
             submit_button.disabled = true;
             user_file_input.classList.remove("is-invalid");
             user_file_input.classList.remove("is-valid");
             spinner.classList.remove("d-none");
+            file_input.value = null;
+            thumbnail.src = "";
         }
         const compression_successful = () => {
             submit_button.disabled = false;
@@ -87,6 +93,7 @@
                     reader.readAsDataURL(result);
                     reader.onloadend = function() {
                         file_input.value = reader.result;
+                        thumbnail.src = reader.result;
                         compression_successful();
                     }
                 },
