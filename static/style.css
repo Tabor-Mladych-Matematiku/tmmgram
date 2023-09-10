@@ -24,6 +24,8 @@ h2 {
 
 .logo {
     font-family: Billabong, sans-serif;
+    font-size: 35px;
+    line-height: 50px;
 }
 
 .navbar-nav .nav-link {

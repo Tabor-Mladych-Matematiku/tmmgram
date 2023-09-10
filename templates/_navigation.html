@@ -3,10 +3,10 @@
 <nav class="navbar navbar-expand navbar-light bg-light mb-4 shadow sticky-top">
     <div class="container justify-content-center">
         <a class="navbar-brand" href="/">
-            <img src="{{ url_for('static', filename='TMM_circle.png') }}" alt="TMM logo" height="50" class="d-inline-block align-top me-3">
-            <span class="logo fs-1 align-middle">tmmgram</span>
+            <img src="{{ url_for('static', filename='TMM_circle.png') }}" alt="TMM logo" height="50" class="d-inline-block align-top me-1">
+            <span class="logo align-middle">tmmgram</span>
         </a>
-        <ul class="navbar-nav mb-2">
+        <ul class="navbar-nav">
             {% if current_user.is_admin %}
                 <li class="nav-item">
                     <a class="nav-link" href="/admin">Administrace</a>
