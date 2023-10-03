@@ -12,7 +12,8 @@ Jednoduchý klon Instagramu pro hru na TMM
    ```
 2. Rename `tmmgram.example.yaml` to `tmmgram.yaml` and fill in the details (for debugging using a local SQLite database, remove
    the `db` section).
-Prepare the database:
+
+3. Prepare the database:
     ```shell
     py create_db.py
     ```
