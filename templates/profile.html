@@ -6,6 +6,22 @@
     <h1>{{ user.name_with_badge | safe }}</h1>
     <h2>Sledující: {{ user.followers }}</h2>
 
+    {% if current_user.is_admin or current_user == user %}
+
+    <ul class="nav nav-underline mb-3 justify-content-center">
+      <li class="nav-item">
+        <a class="nav-link {{ "active" if feed == "approved" }}" aria-current="page" href="/profile/{{ user.name }}">Zveřejněné</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {{ "active" if feed == "pending" }}" href="/profile/{{ user.name }}/pending">Čekající</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link {{ "active" if feed == "rejected" }}" href="/profile/{{ user.name }}/rejected">Zamítnuté</a>
+      </li>
+    </ul>
+
+    {% endif %}
+
     {% include "posts.html" %}
 
 {% endblock content %}

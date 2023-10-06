@@ -23,10 +23,30 @@ def profile(name):
     return render_profile(user)
 
 
-def render_profile(user: User):
+@profile_blueprint.route('/profile/<name>/<feed>')
+@login_required
+def profile_feed(name, feed):
+    user: User = User.query.filter_by(name=name).first()
+    if user is None:
+        flash(f"Uživatel {name} neexistuje.", "warning")
+        return redirect("/")
+    if feed not in ("pending", "rejected"):
+        flash(f"Neplatný stav příspěvku: {feed}.", "warning")
+        return redirect(f"/profile/{name}")
+    return render_profile(user, feed)
+
+
+def render_profile(user: User, feed="approved"):
+    if feed == "pending":
+        approved = None
+    elif feed == "rejected":
+        approved = False
+    else:
+        approved = True
+
     posts: list[Post] = (Post.query
                          .filter_by(id_user=user.id_user)
-                         .filter(Post.approved.is_(True))
+                         .filter(Post.approved.is_(approved))
                          .order_by(Post.timestamp.desc())
                          .all())
-    return render('profile.html', user=user, posts=posts)
+    return render('profile.html', user=user, posts=posts, feed=feed)
