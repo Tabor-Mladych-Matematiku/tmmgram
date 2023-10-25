@@ -19,7 +19,7 @@
         <div class="row mb-3">
             <label for="note" class="col-3 col-form-label required">Bodový koeficient</label>
             <div class="col-9">
-                <input type="number" class="form-control" id="note" name="followers_coefficient" step="0.01" required value="{{ location.followers_coefficient if location else 1 }}">
+                <input type="number" class="form-control" id="note" name="followers_coefficient" step="0.01" required value="{{ location.followers_coefficient if location else 0.3 }}">
             </div>
         </div>
         <div class="row mb-3">
