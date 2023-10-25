@@ -70,10 +70,8 @@
                     const photo_points = parseInt(number_photo.value) / 100.0;
                     const coefficient = parseFloat(followers_coefficient.value);
                     let old_followers = parseInt(followers_at_time_of_post.value);
-                    old_followers += 1;  // TODO: deal with 0 followers at the start of the game
 
-                    // TODO: update the formula
-                    const new_followers = task_points * photo_points * coefficient * old_followers
+                    let new_followers = (task_points + photo_points) * coefficient * old_followers
 
                     followers.value = Math.ceil(new_followers)
                 }

@@ -48,7 +48,7 @@ class User(db.Model, AbstractUser):
     name = db.Column(db.String(256), nullable=False)
     password = db.Column(db.String(256), nullable=False)
     note = db.Column(db.Text, nullable=True)
-    fake_followers = db.Column(db.Integer, nullable=False, default=0)
+    fake_followers = db.Column(db.Integer, nullable=False, default=50)
 
     @property
     def id(self):
@@ -86,7 +86,7 @@ class Location(db.Model):
 
     id_location = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(256), nullable=False)
-    followers_coefficient = db.Column(db.Float, nullable=False)
+    followers_coefficient = db.Column(db.Float, nullable=False, default=0.3)
 
     def __init__(self, name, followers_coefficient):
         self.name = name
