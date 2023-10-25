@@ -29,18 +29,31 @@
             </div>
         </div>
         <div class="row mb-3">
-            <label class="col-3 form-label required">Falešní followeři</label>
+            <label class="col-3 form-label required">Followeři</label>
             <div class="col-3">
-                <label class="form-label" for="fake_followers_original">Původní počet</label>
+                <label class="form-label" for="fake_followers_original">Původní fake</label>
                 <input type="number" class="form-control" id="fake_followers_original" disabled value="{{ user.fake_followers if user else 0 }}">
             </div>
             <div class="col-3">
-                <label class="form-label" for="fake_followers_add">Přičíst</label>
+                <label class="form-label" for="fake_followers_add">Přičíst fake</label>
                 <input type="number" class="form-control" id="fake_followers_add" value="0">
             </div>
             <div class="col-3">
-                <label class="form-label" for="fake_followers_new">Nový počet</label>
+                <label class="form-label" for="fake_followers_new">Nový počet fake</label>
                 <input type="number" class="form-control" id="fake_followers_new" name="fake_followers" required value="{{ user.fake_followers if user else 0 }}">
+            </div>
+
+            <div class="col-3">
+            </div>
+            <div class="col-3">
+                <label class="form-label" for="followers_original">Původní celkem</label>
+                <input type="number" class="form-control" id="followers_original" disabled value="{{ user.followers if user else 0 }}">
+            </div>
+            <div class="col-3">
+            </div>
+            <div class="col-3">
+                <label class="form-label" for="followers_new">Nový počet celkem</label>
+                <input type="number" class="form-control" id="followers_new" disabled value="{{ user.followers if user else 0 }}">
             </div>
         </div>
         <script>
@@ -48,12 +61,16 @@
             const fake_followers_original = document.getElementById("fake_followers_original");
             const fake_followers_add = document.getElementById("fake_followers_add");
             const fake_followers_new = document.getElementById("fake_followers_new");
+            const total_followers_original = document.getElementById("followers_original");
+            const total_followers_new = document.getElementById("followers_new");
 
-            fake_followers_add.addEventListener("change", () => {
+            fake_followers_add.addEventListener("input", () => {
                 fake_followers_new.value = Number(fake_followers_original.value) + Number(fake_followers_add.value);
+                total_followers_new.value = Number(total_followers_original.value) + Number(fake_followers_add.value);
             });
-            fake_followers_new.addEventListener("change", () => {
+            fake_followers_new.addEventListener("input", () => {
                 fake_followers_add.value = Number(fake_followers_new.value) - Number(fake_followers_original.value);
+                total_followers_new.value = Number(total_followers_original.value) + Number(fake_followers_add.value);
             });
             // clear the input on refresh
             fake_followers_add.value = 0;
