@@ -98,10 +98,10 @@ class Post(db.Model):
     __tablename__ = "posts"
 
     id_post = db.Column(db.Integer, primary_key=True)
-    id_user = db.Column(db.Integer, db.ForeignKey(User.id_user, ondelete='RESTRICT'))
+    id_user = db.Column(db.Integer, db.ForeignKey(User.id_user, ondelete='CASCADE'))
     filename = db.Column(db.String(256), nullable=False)
     timestamp = db.Column(db.DateTime)
-    id_location = db.Column(db.Integer, db.ForeignKey(Location.id_location, ondelete='RESTRICT'))
+    id_location = db.Column(db.Integer, db.ForeignKey(Location.id_location, ondelete='CASCADE'))
     description = db.Column(db.Text, nullable=False, default='')
 
     approved = db.Column(db.Boolean, nullable=True, default=None)
