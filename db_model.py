@@ -64,7 +64,7 @@ class User(db.Model, AbstractUser):
 
     @property
     def is_verified(self):
-        return self.name.lower() == "elis"
+        return self.name.lower() == "evil_elis"
 
     @property
     def name_with_badge(self):  # use with "| safe" flask filter to render HTML

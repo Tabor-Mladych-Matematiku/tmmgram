@@ -55,5 +55,5 @@ def users_delete(id_user):
 
     db.session.delete(user)
     db.session.commit()
-    flash(f'Uživatel "{user.name}" (id={user.id}) smazán.', "success")
+    flash(f'Uživatel "{user.name}" (id={user.id_user}) smazán.', "success")
     return redirect("/admin/users")

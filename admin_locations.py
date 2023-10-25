@@ -56,5 +56,5 @@ def locations_delete(id_location):
 
     db.session.delete(location)
     db.session.commit()
-    flash(f'Stanoviště "{location.name}" (id={location.id}) smazáno.', "success")
+    flash(f'Stanoviště "{location.name}" (id={location.id_location}) smazáno.', "success")
     return redirect("/admin/locations")
