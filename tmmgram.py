@@ -24,7 +24,7 @@ except ImportError:
 # Database configuration
 
 if 'db' in config:
-    SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format(
+    SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}?charset=utf8mb4&collation=utf8mb4_general_ci".format(
         username=config['db']['user'],
         password=config['db']['password'],
         hostname=config['db']['hostname'],
