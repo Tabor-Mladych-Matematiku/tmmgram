@@ -104,7 +104,7 @@ class Post(db.Model):
     id_location = db.Column(db.Integer, db.ForeignKey(Location.id_location, ondelete='CASCADE'))
     description = db.Column(db.Text, nullable=False, default='')
 
-    approved = db.Column(db.Boolean, nullable=True, default=None)
+    approved = db.Column(db.Boolean, nullable=True, default=True)
     followers = db.Column(db.Integer, nullable=True, default=None)
 
     # save the rating values for reference
