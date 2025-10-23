@@ -12,10 +12,10 @@
       <li class="nav-item">
         <a class="nav-link {{ "active" if feed == "approved" }}" aria-current="page" href="/profile/{{ user.name }}">Zveřejněné</a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" style="display: none;">
         <a class="nav-link {{ "active" if feed == "pending" }}" href="/profile/{{ user.name }}/pending">Čekající</a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" style="display: none;">
         <a class="nav-link {{ "active" if feed == "rejected" }}" href="/profile/{{ user.name }}/rejected">Zamítnuté</a>
       </li>
     </ul>
