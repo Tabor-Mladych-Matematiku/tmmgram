@@ -17,7 +17,7 @@ upload_blueprint = Blueprint('upload', __name__, template_folder='templates', st
 @login_required
 def upload():
     if request.method == "POST":
-        location = request.form.get('location', 'Default')  # Assign "Default" if not provided (we are removing it from the user's view)
+        location = request.form.get('location', 1) # Assign id_location 1 (Kdekoli) if not provided
         description = request.form['description']
 
         # check if the file was uploaded
