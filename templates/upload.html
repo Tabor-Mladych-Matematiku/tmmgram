@@ -24,14 +24,14 @@
             <img src="" class="img-thumbnail mx-auto d-block" alt="Náhled fotky" width="70%" id="thumbnail">
         </div>
 
-        <div class="mb-3">
+        {# <div class="mb-3">
             <label for="location" class="form-label">Stanoviště</label>
             <select class="form-select" id="location" name="location" required>
                 {% for location in locations %}
                     <option value="{{ location.id_location }}">{{ location.name }}</option>
                 {% endfor %}
             </select>
-        </div>
+        </div> #}
 
         <div class="mb-3">
             <label for="description" class="form-label">Popisek</label>
