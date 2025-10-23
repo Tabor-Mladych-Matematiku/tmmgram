@@ -139,4 +139,4 @@ class Post(db.Model):
 
     @property
     def time(self):
-        return self.timestamp.strftime("%H:%M")
+        return self.timestamp.strftime("%d.%m.%Y %H:%M")
