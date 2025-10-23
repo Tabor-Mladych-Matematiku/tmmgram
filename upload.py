@@ -32,15 +32,35 @@ def upload():
         file = file[23:]
 
         # save the uploaded file
-        filename = f"{current_user.id_user}_{uuid.uuid4()}.jpg"
-        file_path = os.path.join(config['upload_folder'], filename)
-        with open(file_path, "wb") as image_file:
-            image_file.write(base64.decodebytes(file.encode()))
+        #filename = f"{current_user.id_user}_{uuid.uuid4()}.jpg"
+        #file_path = os.path.join(config['upload_folder'], filename)
+        #with open(file_path, "wb") as image_file:
+        #    image_file.write(base64.decodebytes(file.encode()))
 
         # create a post in database
-        post = Post(filename, current_user, location, description)
+        #post = Post(filename, current_user, location, description)
+        #db.session.add(post)
+        #db.session.commit()
+
+        # Save the uploaded file temporarily
+        temp_filename = f"{current_user.id_user}_{uuid.uuid4()}.jpg"
+        temp_file_path = os.path.join(config['upload_folder'], temp_filename)
+        with open(temp_file_path, "wb") as image_file:
+            image_file.write(base64.decodebytes(file.encode()))
+
+        # Create a post in the database
+        post = Post(temp_filename, current_user, location, description)
+        post.approved = True
+        post.followers = 0  # Default value
+        post.task_points = 0  # Default value
+        post.photo_points = 0  # Default value
         db.session.add(post)
         db.session.commit()
+
+        # Move the file to its final location
+        old_file_path = temp_file_path
+        new_file_path = post.file_path
+        os.rename(old_file_path, new_file_path)
 
         flash(f"Soubor byl úspěšně nahrán.", "success")
         return redirect("/")
