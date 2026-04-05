@@ -22,6 +22,17 @@
 
     {% endif %}
 
-    {% include "posts.html" %}
+    <div id="posts"
+         data-limit="{{ post_feed_limit|default(10) }}"
+         data-posts-url="{{ url_for('profile.profile_posts', name=user.name, feed=feed) }}">
+      {% include "posts.html" %}
+    </div>
+    <p id="posts-status" class="text-center text-muted my-3" style="display:none;"></p>
+    <div id="posts-sentinel"></div>
 
 {% endblock content %}
+
+{% block script %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='feed.js') }}" defer></script>
+{% endblock script %}

@@ -57,3 +57,8 @@ button:disabled .spinner-border {
 img#thumbnail[src=""] {
     display: none !important;
 }
+
+/* Posts */
+#posts-sentinel {
+    height: 10px;
+}

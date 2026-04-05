@@ -21,7 +21,12 @@ Jednoduchý klon Instagramu pro hru na TMM
 ### Run (for development)
 
 ```shell
-py -m flask --app tmmgram run 
+py -m flask --app tmmgram run
+```
+
+With debugger and changes auto-reload:
+```shell
+py -m flask --app tmmgram --debug run
 ```
 
 ## Deployment
