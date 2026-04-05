@@ -1,8 +1,11 @@
+from typing import Any, cast
+
 from flask import Blueprint, request
 from flask_login import login_required
 
 from db_model import Post
 from helpers import render
+from likes_helpers import get_likes_data
 
 POST_FEED_LIMIT = 10
 
@@ -14,10 +17,15 @@ feed_blueprint = Blueprint('feed', __name__, template_folder='templates', static
 def render_feed():
     posts: list[Post] = (Post.query
                          .filter(Post.approved.is_(True))
-                         .order_by(Post.timestamp.desc())
+                         .order_by(cast(Any, Post.timestamp).desc())
                          .limit(POST_FEED_LIMIT)
                          .all())
-    return render('index.html', posts=posts, post_feed_limit=POST_FEED_LIMIT)
+    likes_count_by_post_id, liked_post_ids = get_likes_data(posts)
+    return render('index.html',
+                  posts=posts,
+                  post_feed_limit=POST_FEED_LIMIT,
+                  likes_count_by_post_id=likes_count_by_post_id,
+                  liked_post_ids=liked_post_ids)
 
 @feed_blueprint.route('/posts')
 @login_required
@@ -32,8 +40,12 @@ def render_posts():
 
     posts: list[Post] = (Post.query
                          .filter(Post.approved.is_(True))
-                         .order_by(Post.timestamp.desc())
+                         .order_by(cast(Any, Post.timestamp).desc())
                          .offset(offset)
                          .limit(limit)
                          .all())
-    return render('posts.html', posts=posts)
+    likes_count_by_post_id, liked_post_ids = get_likes_data(posts)
+    return render('posts.html',
+                  posts=posts,
+                  likes_count_by_post_id=likes_count_by_post_id,
+                  liked_post_ids=liked_post_ids)

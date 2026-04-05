@@ -140,3 +140,31 @@ class Post(db.Model):
     @property
     def time(self):
         return self.timestamp.strftime("%d.%m.%Y %H:%M")
+
+    @property
+    def likes_count(self):
+        return (db.session.query(func.count(PostLike.id_post_like))
+                .filter(PostLike.id_post == self.id_post)
+                .scalar())
+
+    def is_liked_by(self, user: User):
+        if user is None or user.is_admin:
+            return False
+        return (db.session.query(PostLike.id_post_like)
+                .filter(PostLike.id_post == self.id_post)
+                .filter(PostLike.id_user == user.id_user)
+                .first()) is not None
+
+
+class PostLike(db.Model):
+
+    __tablename__ = "post_likes"
+    __table_args__ = (db.UniqueConstraint('id_post', 'id_user', name='uq_post_likes_post_user'),)
+
+    id_post_like = db.Column(db.Integer, primary_key=True)
+    id_post = db.Column(db.Integer, db.ForeignKey(Post.id_post, ondelete='CASCADE'), nullable=False)
+    id_user = db.Column(db.Integer, db.ForeignKey(User.id_user, ondelete='CASCADE'), nullable=False)
+    timestamp = db.Column(db.DateTime, nullable=False, default=datetime.now)
+
+    post = relationship("Post", backref=backref("likes", lazy="dynamic", cascade="all, delete-orphan"))
+    user = relationship("User", backref=backref("liked_posts", lazy="dynamic", cascade="all, delete-orphan"))

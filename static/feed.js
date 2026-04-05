@@ -11,6 +11,22 @@ if (!postsContainer || !statusElement || !sentinel) {
 let isLoading = false;
 let hasMore = true;
 
+function applyLikeUi(button, liked, likesCount) {
+    const icon = button.querySelector('i');
+    if (icon) {
+        icon.classList.toggle('bi-heart-fill', liked);
+        icon.classList.toggle('text-danger', liked);
+        icon.classList.toggle('bi-heart', !liked);
+    }
+    button.dataset.liked = liked ? 'true' : 'false';
+
+    const postId = button.dataset.postId;
+    const countElement = postsContainer.querySelector(`.post-like-count[data-post-id="${postId}"]`);
+    if (countElement) {
+        countElement.textContent = String(likesCount);
+    }
+}
+
 function setStatus(text) {
     statusElement.textContent = text;
     statusElement.style.display = text ? 'block' : 'none';
@@ -57,3 +73,34 @@ const observer = new IntersectionObserver((entries) => {
 });
 
 observer.observe(sentinel);
+
+postsContainer.addEventListener('click', async (event) => {
+    const button = event.target.closest('.post-like-button');
+    if (!button || button.disabled) {
+        return;
+    }
+
+    const postId = button.dataset.postId;
+    if (!postId) {
+        return;
+    }
+
+    button.disabled = true;
+
+    try {
+        const response = await fetch(`/posts/${postId}/like-toggle`, {
+            method: 'POST'
+        });
+
+        if (!response.ok) {
+            console.error('Like toggle failed:', (await response.json()).error);
+        }
+
+        const payload = await response.json();
+        applyLikeUi(button, !!payload.liked, Number(payload.likes_count || 0));
+    } catch (error) {
+        console.error('Like toggle failed:', error);
+    } finally {
+        button.disabled = false;
+    }
+});

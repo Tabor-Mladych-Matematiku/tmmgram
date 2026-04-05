@@ -5,6 +5,7 @@ from flask_login import current_user, login_required
 
 from db_model import User, Post
 from helpers import render
+from likes_helpers import get_likes_data
 
 profile_blueprint = Blueprint('profile', __name__, template_folder='templates', static_folder='static')
 PROFILE_POST_FEED_LIMIT = 10
@@ -60,7 +61,14 @@ def profile_feed(name, feed):
 
 def render_profile(user: User, feed="approved"):
     posts = _query_profile_posts(user, feed, PROFILE_POST_FEED_LIMIT, 0)
-    return render('profile.html', user=user, posts=posts, feed=feed, post_feed_limit=PROFILE_POST_FEED_LIMIT)
+    likes_count_by_post_id, liked_post_ids = get_likes_data(posts)
+    return render('profile.html',
+                  user=user,
+                  posts=posts,
+                  feed=feed,
+                  post_feed_limit=PROFILE_POST_FEED_LIMIT,
+                  likes_count_by_post_id=likes_count_by_post_id,
+                  liked_post_ids=liked_post_ids)
 
 
 @profile_blueprint.route('/profile/<name>/posts')
@@ -80,4 +88,8 @@ def profile_posts(name, feed="approved"):
         offset = 0
 
     posts = _query_profile_posts(user, feed, limit, offset)
-    return render('posts.html', posts=posts)
+    likes_count_by_post_id, liked_post_ids = get_likes_data(posts)
+    return render('posts.html',
+                  posts=posts,
+                  likes_count_by_post_id=likes_count_by_post_id,
+                  liked_post_ids=liked_post_ids)

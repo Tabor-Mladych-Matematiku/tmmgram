@@ -6,12 +6,27 @@
     <h5 class="card-title"><a href="/profile/{{ post.user.name }}" class="text-reset text-decoration-none">
         {{ post.user.name_with_badge | safe }}</a>
     </h5>
-    <h6 class="card-subtitle mb-2 text-muted">
-        {#  {{ post.location.name }}, #}
-        {{ post.time }}
-    </h6>
+    {#<h6 class="card-subtitle mb-2 text-muted">
+        {{ post.location.name }}, 
+    </h6>#}
 </div>
 <img src="{{ post.src }}" class="card-img" alt="photo">
 <div class="card-body">
+    {% set likes_count = likes_count_by_post_id.get(post.id_post, 0) if likes_count_by_post_id is defined else post.likes_count %}
+    {% set is_liked = post.id_post in liked_post_ids if liked_post_ids is defined else post.is_liked_by(current_user) %}
+    {% if not current_user.is_admin and post.approved %}
+        <div class="d-flex align-items-center gap-2 mb-2">
+            <button type="button"
+                    class="btn btn-link p-0 post-like-button"
+                    data-post-id="{{ post.id_post }}"
+                    data-liked="{{ 'true' if is_liked else 'false' }}"
+                    aria-label="To se mi líbí"
+                    title="To se mi líbí">
+                <i class="bi {{ 'bi-heart-fill text-danger' if is_liked else 'bi-heart' }} fs-4"></i>
+            </button>
+            <span class="post-like-count" data-post-id="{{ post.id_post }}">{{ likes_count }}</span>
+            <span class="text-muted ms-auto">{{ post.time }}</span>
+        </div>
+    {% endif %}
     <p class="card-text">{{ post.description }}</p>
 </div>

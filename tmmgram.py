@@ -79,6 +79,8 @@ from profile import profile_blueprint
 app.register_blueprint(profile_blueprint)
 from feed import feed_blueprint
 app.register_blueprint(feed_blueprint)
+from post_likes import post_likes_blueprint
+app.register_blueprint(post_likes_blueprint)
 
 
 # serve images
