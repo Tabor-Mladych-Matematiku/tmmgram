@@ -13,6 +13,6 @@ def render_feed():
     posts: list[Post] = (Post.query
                          .filter(Post.approved.is_(True))
                          .order_by(Post.timestamp.desc())
-                         .limit(10)
+                         .limit(30)
                          .all())
     return render('index.html', posts=posts)
